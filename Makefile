@@ -12,8 +12,9 @@ else
 DATE       ?= $(shell date -u -d @${SOURCE_DATE_EPOCH} +"%Y-%m-%dT%H:%M:%SZ")
 endif
 VERSION    ?= v0.50.4
+SV_VERSION := ${VERSION}-sv
 IMG_NAME   := derailed/k9s
-IMAGE      := ${IMG_NAME}:${VERSION}
+IMAGE      := ${IMG_NAME}:${SV_VERSION}
 
 default: help
 
@@ -26,7 +27,7 @@ cover:  ## Run test coverage suite
 
 build:  ## Builds the CLI
 	@CGO_ENABLED=${CGO_ENABLED} go build ${GO_FLAGS} \
-	-ldflags "-w -s -X ${PACKAGE}/cmd.version=${VERSION} -X ${PACKAGE}/cmd.commit=${GIT_REV} -X ${PACKAGE}/cmd.date=${DATE}" \
+	-ldflags "-w -s -X ${PACKAGE}/cmd.version=${SV_VERSION} -X ${PACKAGE}/cmd.commit=${GIT_REV} -X ${PACKAGE}/cmd.date=${DATE}" \
 	-a -tags=${GO_TAGS} -o ${OUTPUT_BIN} main.go
 
 kubectl-stable-version:  ## Get kubectl latest stable version
