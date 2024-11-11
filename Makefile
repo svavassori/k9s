@@ -7,8 +7,9 @@ GO_TAGS	        ?= netgo
 CGO_ENABLED     ?=0
 GIT_REV         ?= $(shell git rev-parse --short HEAD)
 
+SV_VERSION      := ${VERSION}-sv
 IMG_NAME        := derailed/k9s
-IMAGE           := ${IMG_NAME}:${VERSION}
+IMAGE           := ${IMG_NAME}:${SV_VERSION}
 BUILD_PLATFORMS ?= linux/amd64,linux/arm64
 
 SOURCE_DATE_EPOCH ?= $(shell date +%s)
@@ -29,7 +30,7 @@ cover:                   ## Run test coverage suite
 
 build:                   ## Builds the CLI
 	@CGO_ENABLED=${CGO_ENABLED} go build ${GO_FLAGS} \
-	-ldflags "-w -s -X ${PACKAGE}/cmd.version=${VERSION} -X ${PACKAGE}/cmd.commit=${GIT_REV} -X ${PACKAGE}/cmd.date=${DATE}" \
+	-ldflags "-w -s -X ${PACKAGE}/cmd.version=${SV_VERSION} -X ${PACKAGE}/cmd.commit=${GIT_REV} -X ${PACKAGE}/cmd.date=${DATE}" \
 	-a -tags=${GO_TAGS} -o ${OUTPUT_BIN} main.go
 
 kubectl-stable-version:  ## Get kubectl latest stable version
