@@ -1,0 +1,34 @@
+name: "Sync upstream"
+
+on:
+  schedule:
+    - cron:  "*/10 * * * *"
+
+jobs:
+  sync_latest_from_upstream:
+    runs-on: ubuntu-latest
+    name: Sync latest commits from upstream repo
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch updates from upstream, rebase "increase-log-lines" on latest master and tags it
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/derailed/k9s.git
+          git fetch --all
+          latest_tag=$(git describe --tags --abbrev=0 upstream/master)
+          git checkout increase-log-lines
+          git rebase ${latest_tag}
+          git tag ${latest_tag}-sv
+          git push
+          git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
