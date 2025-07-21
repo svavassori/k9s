@@ -1,7 +1,7 @@
 name: Closeout Stale Issues
 on:
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "0 2 30 2 *" # effectively disabled
 
 jobs:
   close-issues:
