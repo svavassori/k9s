@@ -113,7 +113,7 @@ changelog:
 #      system "k9s version"
 
 nfpms:
-  - file_name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
+  - file_name_template: "{{ .ConventionalFileName }}"
     maintainer: Fernand Galiana
     homepage: https://k9scli.io
     description: Kubernetes CLI To Manage Your Clusters In Style!
